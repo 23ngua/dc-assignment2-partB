@@ -1,0 +1,67 @@
+﻿@using BankWebApp.Models.ViewModels.Administrator
+@model AdminAuditLogVM
+
+@{
+    ViewData["Title"] = "Audit Log";
+}
+
+<h2>Audit Log</h2>
+
+<p>
+    Administrator actions recorded by the system.
+</p>
+
+@if (ViewData["AuditError"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["AuditError"]
+    </div>
+
+    <a asp-controller="Administrator"
+       asp-action="Index"
+       class="btn btn-secondary mb-3">
+        Back
+    </a>
+}
+else
+{
+    <a asp-controller="Administrator"
+       asp-action="Index"
+       class="btn btn-secondary mb-3">
+        Back
+    </a>
+
+    @if (Model.Audits == null || !Model.Audits.Any())
+    {
+        <div class="alert alert-warning">
+            No audit records found.
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date / Time</th>
+                    <th>Administrator</th>
+                    <th>Action</th>
+                    <th>Target</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var audit in Model.Audits)
+                {
+                    <tr>
+                        <td>@audit.Timestamp.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td>@audit.AdminUsername</td>
+                        <td>@audit.Action</td>
+                        <td>@audit.Target</td>
+                        <td>@audit.Details</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

@@ -1,0 +1,70 @@
+﻿@model BankWebApp.Models.ViewModels.Customer.CustomerProfileVM
+
+@{
+    ViewData["Title"] = "User profile";
+}
+
+<h2>User Profile</h2>
+
+@if (TempData["ProfileMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["ProfileMessage"]
+    </div>
+}
+
+@if (ViewData["ProfileError"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ProfileError"]
+    </div>
+
+    <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary">
+        Back
+    </a>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+
+        @if (!string.IsNullOrWhiteSpace(Model.Picture))
+        {
+            <img src="@Model.Picture" alt="Profile picture"
+                 class="float-end"
+                 style="width: 150px; height: 150px; object-fit: fill;" />
+        }
+
+        <h5 class="card-title">@Model.FirstName @Model.LastName</h5>
+
+        <p>
+            <strong>Username:</strong>
+            @Model.Username
+        </p>
+
+            <p>
+                <strong>Email:</strong>
+                @Model.Email
+            </p>
+
+            <p>
+                <strong>Address:</strong>
+                @Model.Address
+            </p>
+
+            <p>
+                <strong>Phone:</strong>
+                @Model.Phone
+            </p>
+
+            <a asp-controller="Customer" asp-action="EditProfile" class="btn btn-primary">
+                Edit Details
+            </a>
+
+            <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+    </div>
+}

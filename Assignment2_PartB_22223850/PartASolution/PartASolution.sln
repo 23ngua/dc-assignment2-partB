@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37516.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataWebService", "DataWebService\DataWebService.csproj", "{48897AB3-7DA1-3D42-64D0-C2699F3170ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48897AB3-7DA1-3D42-64D0-C2699F3170ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48897AB3-7DA1-3D42-64D0-C2699F3170ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48897AB3-7DA1-3D42-64D0-C2699F3170ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48897AB3-7DA1-3D42-64D0-C2699F3170ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F601D28E-D7A7-430A-B704-267B945F5438}
+	EndGlobalSection
+EndGlobal

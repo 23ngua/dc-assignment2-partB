@@ -1,0 +1,82 @@
+﻿@model BankWebApp.Models.ViewModels.Customer.CustomerTransferVM
+
+@{
+    ViewData["Title"] = "Transfer Money";
+}
+
+<h2>Transfer Money</h2>
+
+@if (TempData["TransferError"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["TransferError"]
+    </div>
+
+    <a asp-controller="Customer"
+       asp-action="Index"
+       class="btn btn-secondary">
+        Back
+    </a>
+}
+else
+{
+    @if (TempData["TransferMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["TransferMessage"]
+        </div>
+    }
+
+    <form asp-controller="Customer" asp-action="Transfer" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="FromAccount" class="form-label">From Account</label>
+
+            <select asp-for="FromAccount" class="form-control">
+                @foreach (var account in Model.SourceAccounts)
+                {
+                    <option value="@account.AccNum">
+                        Account @account.AccNum - @account.AccName
+                    </option>
+                }
+            </select>
+
+            <span asp-validation-for="FromAccount" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ToAccount" class="form-label"></label>
+            <input asp-for="ToAccount" class="form-control" />
+            <span asp-validation-for="ToAccount" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Amount" class="form-label"></label>
+            <input asp-for="Amount" class="form-control" />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Transfer
+        </button>
+
+        <a asp-controller="Customer"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

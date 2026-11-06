@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Administrator";
+}
+
+<h2>Administrator Area</h2>
+
+<p>You are signed in as an administrator.</p>
+
+<div class="mt-3">
+    <a asp-controller="Administrator" asp-action="UserSearch" class="btn btn-primary">
+        User Search
+    </a>
+
+    <a asp-controller="Administrator" asp-action="CreateUser" class="btn btn-primary">
+        Create User
+    </a>
+
+    <a asp-controller="Administrator" asp-action="TransactionSearch" class="btn btn-primary">
+        Transaction Search
+    </a>
+
+    <a asp-controller="Administrator" asp-action="AuditLog" class="btn btn-primary">
+        Audit Log
+    </a>
+</div>

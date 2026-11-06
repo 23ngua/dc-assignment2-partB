@@ -1,0 +1,111 @@
+﻿@model BankWebApp.Models.ViewModels.Administrator.AdminUserSearchVM
+
+@{
+    ViewData["Title"] = "User Search";
+}
+
+<h2>User Search</h2>
+
+@if (TempData["UserUpdateMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["UserUpdateMessage"]
+    </div>
+}
+
+@if (TempData["UserUpdateError"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["UserUpdateError"]
+    </div>
+}
+
+<form asp-controller="Administrator" asp-action="UserSearch" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="SearchTerm" class="form-label"></label>
+        <input asp-for="SearchTerm" class="form-control" />
+        <span asp-validation-for="SearchTerm" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Search
+    </button>
+    
+    <a asp-controller="Administrator" asp-action="Index" class="btn btn-secondary">
+        Back
+    </a>
+</form>
+
+@if (Model.SearchPerformed)
+{
+    <hr />
+
+    if (Model.UserFound)
+    {
+        <h4>User Details</h4>
+
+        <div class="card">
+            <div class="card-body">
+
+                <p>
+                    <strong>Username:</strong>
+                    @Model.Username
+                </p>
+
+                <p>
+                    <strong>First Name:</strong>
+                    @Model.FirstName
+                </p>
+
+                <p>
+                    <strong>Last Name:</strong>
+                    @Model.LastName
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    @Model.Email
+                </p>
+
+                <p>
+                    <strong>Address:</strong>
+                    @Model.Address
+                </p>
+
+                <p>
+                    <strong>Phone:</strong>
+                    @Model.Phone
+                </p>
+
+                <a asp-controller="Administrator" asp-action="EditUser" asp-route-username="@Model.Username" class="btn btn-primary">
+                    Edit User
+                </a>
+
+                <form asp-controller="Administrator" asp-action="DeactivateUser" method="post" class="d-inline">
+
+                    <input type="hidden" name="username" value="@Model.Username" />
+
+                    <button type="submit" class="btn btn-danger">
+                        Deactivate User
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    }
+    else if (ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-warning mt-3">
+            No matching user was found.
+        </div>
+    }
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

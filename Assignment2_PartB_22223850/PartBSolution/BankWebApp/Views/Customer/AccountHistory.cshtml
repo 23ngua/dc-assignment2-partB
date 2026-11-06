@@ -1,0 +1,251 @@
+﻿@model BankWebApp.Models.ViewModels.Customer.CustomerAccountHistoryVM
+
+@{
+    ViewData["Title"] = "Account History";
+
+    // The controller currently places the selected account
+    // inside the Accounts collection.
+    var account = Model.Accounts.FirstOrDefault();
+}
+
+<h2>Account History</h2>
+
+@if (TempData["AccountHistoryError"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["AccountHistoryError"]
+    </div>
+}
+else if (account == null)
+{
+    <div class="alert alert-warning">
+        No account information is available.
+    </div>
+}
+else
+{
+    <div class="card mb-4">
+        <div class="card-body">
+
+            <!-- Select acc from list -->
+            <form asp-controller="Customer" asp-action="AccountHistory" method="get" class="mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Select Account</label>
+                        <select name="accNum" class="form-select" onchange="this.form.submit()">
+                            @foreach (var a in Model.AvailableAccounts)
+                            {
+                                <option value="@a.AccNum" selected="@(a.AccNum.ToString() == Model.AccountNumber)">
+                                    @a.AccName
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <h5 class="card-title">
+                Account @account.AccountName
+            </h5>
+
+            <p>
+                <strong>Balance:</strong>
+                $@account.Balance.ToString("0.00")
+            </p>
+
+            <p>
+                <strong>Account Number:</strong>
+                @account.AccountNumber
+            </p>
+
+            <!-- Filtering and sorting -->
+            <form asp-controller="Customer"
+                  asp-action="AccountHistory"
+                  method="get"
+                  class="mb-3">
+
+                <!-- Keep the currently selected account -->
+                <input type="hidden"
+                       name="accNum"
+                       value="@account.AccountNumber" />
+
+                <div class="row">
+
+                    <!-- Start date -->
+                    <div class="col-md-3">
+                        <label asp-for="StartDate"
+                               class="form-label">
+                            Start Date
+                        </label>
+
+                        <input asp-for="StartDate"
+                               class="form-control" />
+                    </div>
+
+                    <!-- End date -->
+                    <div class="col-md-3">
+                        <label asp-for="EndDate"
+                               class="form-label">
+                            End Date
+                        </label>
+
+                        <input asp-for="EndDate"
+                               class="form-control" />
+                    </div>
+
+                    <!-- Sorting -->
+                    <div class="col-md-3">
+                        <label asp-for="SortOrder"
+                               class="form-label">
+                            Sort By
+                        </label>
+
+                        <select asp-for="SortOrder"
+                                class="form-select">
+
+                            <option value="date_desc">
+                                Date - Newest First
+                            </option>
+
+                            <option value="date_asc">
+                                Date - Oldest First
+                            </option>
+
+                            <option value="amount_desc">
+                                Amount - Highest First
+                            </option>
+
+                            <option value="amount_asc">
+                                Amount - Lowest First
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-3 d-flex align-items-end">
+
+                        <button type="submit"
+                                class="btn btn-primary me-2">
+                            Apply
+                        </button>
+
+                        <a asp-controller="Customer"
+                           asp-action="AccountHistory"
+                           asp-route-accNum="@account.AccountNumber"
+                           class="btn btn-secondary">
+                            Clear
+                        </a>
+
+                    </div>
+
+                </div>
+            </form>
+
+            <hr />
+
+            <h6>Transaction History</h6>
+
+            @if (account.Transactions == null ||
+                 account.Transactions.Count == 0)
+            {
+                <p>No transactions found.</p>
+            }
+            else
+            {
+                <table class="table table-striped">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var transaction in account.Transactions)
+                        {
+                            <tr>
+                                <td>
+                                    @transaction.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
+                                </td>
+
+                                <td>
+                                    @transaction.Type
+                                </td>
+
+                                <td>
+                                    @transaction.Description
+                                </td>
+
+                                <td>
+                                    $@transaction.Amount.ToString("0.00")
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+
+            <!-- Paging -->
+            @if (Model.TotalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination">
+
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                   asp-controller="Customer"
+                                   asp-action="AccountHistory"
+                                   asp-route-accNum="@account.AccountNumber"
+                                   asp-route-startDate="@Model.StartDate"
+                                   asp-route-endDate="@Model.EndDate"
+                                   asp-route-sortOrder="@Model.SortOrder"
+                                   asp-route-page="@(Model.CurrentPage - 1)">
+                                    Previous
+                                </a>
+                            </li>
+                        }
+
+                        <li class="page-item disabled">
+                            <span class="page-link">
+                                Page @Model.CurrentPage of @Model.TotalPages
+                            </span>
+                        </li>
+
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                   asp-controller="Customer"
+                                   asp-action="AccountHistory"
+                                   asp-route-accNum="@account.AccountNumber"
+                                   asp-route-startDate="@Model.StartDate"
+                                   asp-route-endDate="@Model.EndDate"
+                                   asp-route-sortOrder="@Model.SortOrder"
+                                   asp-route-page="@(Model.CurrentPage + 1)">
+                                    Next
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+            }
+
+        </div>
+    </div>
+}
+
+<a asp-controller="Customer"
+   asp-action="Index"
+   class="btn btn-secondary">
+    Back
+</a>

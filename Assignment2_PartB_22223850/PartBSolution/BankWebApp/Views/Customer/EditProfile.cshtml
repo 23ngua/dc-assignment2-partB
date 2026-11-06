@@ -1,0 +1,97 @@
+﻿@model BankWebApp.Models.ViewModels.Customer.CustomerProfileVM
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<h2>Edit Profile</h2>
+
+@if (ViewData["ProfileError"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ProfileError"]
+    </div>
+}
+
+<form asp-controller="Customer" asp-action="EditProfile" method="post" enctype="multipart/form-data">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Username" class="form-label"></label>
+        <input asp-for="Username" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Address" class="form-label"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <!-- Keep the existing picture path if no new pic is uploaded -->
+    <input asp-for="Picture" type="hidden" />
+
+    <div class="mb-3">
+        @if (!string.IsNullOrWhiteSpace(Model.Picture))
+        {
+            <img src="@Model.Picture" alt="Current profile picture"
+                 class="d-block mb-2"
+                 style="width: 80px; height: 80px; object-fit: cover;" />
+        }
+
+        <label asp-for="PictureFile" class="form-label">Profile Picture</label>
+        <input asp-for="PictureFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="PictureFile" class="text-danger"></span>
+        <div class="form-text">Leave blank to keep your current profile picture.</div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NewPassword" class="form-label">
+            New Password
+        </label>
+
+        <input asp-for="NewPassword" type="password" class="form-control" autocomplete="new-password" />
+
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+
+        <div class="form-text">
+            Leave blank to keep your current password.
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Save Changes
+    </button>
+
+    <a asp-controller="Customer" asp-action="Profile" class="btn btn-secondary">
+        Cancel
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
